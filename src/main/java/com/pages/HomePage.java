@@ -7,7 +7,7 @@ import com.drivermanagement.WaitUtils;
 
 public class HomePage {
 	private final WebDriver driver;
-	private final By productsHeader = By.xpath("//div[text()='Products']");
+	private final By productsHeader = By.cssSelector("[data-test='title']");
 
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
