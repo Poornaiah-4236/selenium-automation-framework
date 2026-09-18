@@ -1,6 +1,0 @@
-com\Tests\LoginTest.class
-com\stepDefinitions\LoginDefination.class
-com\Hooks\hooks.class
-com\Runner\TestRunner.class
-com\Tests\HomeTest.class
-com\Tests\BaseTest.class

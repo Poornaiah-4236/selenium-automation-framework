@@ -1,0 +1,20 @@
+# Build output
+target/
+
+# Reports / test output
+TestResult/
+test-output/
+screenshots/
+logs/
+
+# IDE metadata (Eclipse)
+.classpath
+.project
+.settings/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

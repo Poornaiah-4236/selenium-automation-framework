@@ -1,81 +1,95 @@
-Automation Testing Framework
-A scalable, reusable, and maintainable test automation framework built using modern tools and best practices. Designed for UI, API, and end-to-end testing.
-📌 Project Overview
+# Selenium Automation Framework
 
-This project provides a robust automation framework that supports:
+A Selenium + Cucumber (BDD) + TestNG automation framework targeting
+[saucedemo.com](https://www.saucedemo.com/), built with the Page Object
+Model, data-driven Excel test data, Extent Reports, and Log4j2 logging.
 
-UI Automation (Web testing)
-API Testing
-Data-driven testing
-BDD (Behavior Driven Development)
+## Tech Stack
 
-It helps teams reduce manual effort, improve test coverage, and speed up releases.
+- **Language:** Java 17
+- **Browser automation:** Selenium WebDriver 4.43 (Selenium Manager resolves
+  driver binaries automatically - no manual setup needed)
+- **Test frameworks:** TestNG + Cucumber (Gherkin/BDD)
+- **Build tool:** Maven
+- **Reporting:** ExtentReports (`TestResult/`) and Cucumber/TestNG's own
+  HTML/XML reports (`target/`, `test-output/`)
+- **Logging:** Log4j2
+- **CI/CD:** GitHub Actions (`.github/workflows/ci.yml`)
 
-🛠️ Tech Stack
-Language: Java / JavaScript
-Automation Tools: Selenium / Playwright
-Test Framework: TestNG / Cucumber
-Build Tool: Maven / npm
-Reporting: Extent Reports / Allure
-CI/CD: Jenkins / GitHub Actions
-📂 Project Structure
-project-root
-│── src/test/java
-│   ├── tests
-│   ├── pages
-│   ├── utils
-│── src/test/resources
-│   ├── testdata
-│   ├── config
-│── reports
-│── pom.xml / package.json
-⚙️ Features
-✅ Page Object Model (POM) design
-✅ Data-driven testing
-✅ Cross-browser execution
-✅ Parallel test execution
-✅ Reusable utilities
-✅ Detailed reporting
-▶️ How to Run Tests
-1. Clone the Repository
-git clone https://github.com/Poornaiah-4236/HybrideMay.git
-2. Install Dependencies
+## Project Structure
 
-For Maven:
+```
+src/main/java/com/
+  drivermanagement/   WebDriver lifecycle (local + remote/Grid), explicit waits
+  listeners/          TestNG listeners: Extent reporting, retry, annotation transform
+  pages/               Page Object Model classes
+  testdata/            Excel-backed test data reader
+  utils/               Screenshot capture
+  configuration/       Config.properties loader
+src/test/java/com/
+  hooks/               Cucumber @Before/@After hooks
+  runner/              Cucumber-TestNG runner
+  stepdefinitions/     Cucumber step definitions
+  tests/               Plain TestNG tests (BaseTest, LoginTest)
+src/test/resources/
+  features/            Gherkin .feature files
+  TestData/            Excel test data files
+  log4j2-test.xml      Logging configuration
+```
 
-mvn clean install
+## Configuration
 
-For Node:
+Runtime settings live in `Config.properties` (repo root). Any key can be
+overridden per-run with a JVM system property, e.g. `-Dbrowser=firefox`.
 
-npm install
-3. Run Tests
+| Key | Purpose | Default |
+|---|---|---|
+| `browser` | `chrome` / `firefox` / `edge` | `chrome` |
+| `url` | Application under test | `https://www.saucedemo.com/` |
+| `username` / `password` | SauceDemo's public demo credentials (not a real secret) | `standard_user` / `secret_sauce` |
+| `implicitWaitSeconds` | Global implicit wait | `10` |
+| `explicitWaitSeconds` | `WaitUtils` explicit wait timeout | `20` |
+| `remote` | Run against a Selenium Grid hub instead of a local browser | `false` |
+| `gridUrl` | Grid hub URL, used when `remote=true` | `http://localhost:4444/wd/hub` |
+| `headless` | Run the browser headless | `false` |
+
+## Running Tests
+
+```bash
 mvn test
+```
 
-or
+This runs the full cross-browser suite defined in `testng.xml` (Chrome,
+Firefox, Edge in parallel). Useful overrides:
 
-npm test
-📊 Reports
+```bash
+# Single browser, headless (what CI runs)
+mvn test -DsuiteXmlFile=testng-ci.xml -Dheadless=true
 
-After execution, reports are generated in:
+# Only a specific Cucumber tag
+mvn test -Dcucumber.filter.tags=@Smoke
 
-/reports
+# Against a running Selenium Grid hub
+mvn test -Dremote=true -DgridUrl=http://localhost:4444/wd/hub
+```
 
-Open the report file in your browser to view results.
+## Reports
 
-🔄 CI/CD Integration
+After a run, check:
 
-This framework supports integration with:
+- `TestResult/extent-report-*.html` - ExtentReports HTML report (pass/fail,
+  screenshots on failure)
+- `target/cucumber-reports.html` - Cucumber's own HTML report
+- `test-output/` - TestNG's default HTML/XML report
 
-Jenkins pipelines
-GitHub Actions
-🤝 Contribution
+None of these are committed to the repo (see `.gitignore`).
 
-Contributions are welcome!
-Feel free to fork the repo and submit a pull request.
+## CI/CD
 
-📧 Contact
-For any queries or support:
-Name:Poornaiah
-Email: poornamadipalli@gmail.com
-⭐ Acknowledgements
-If you find this project useful, don’t forget to ⭐ the repo!
+`.github/workflows/ci.yml` runs the headless Chrome suite on every push and
+pull request against `main`, and uploads the Extent/TestNG reports as build
+artifacts.
+
+## Contact
+
+Poornaiah - poornamadipalli@gmail.com
