@@ -5,6 +5,14 @@
 	<groupId>SeleniumBDDMay2026</groupId>
 	<artifactId>SeleniumBDDMay2026</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<suiteXmlFile>testng.xml</suiteXmlFile>
+	</properties>
+
 	<dependencies>
 		<!-- Source:
 		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
@@ -14,30 +22,16 @@
 			<version>4.43.0</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- Source:
-		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
+
+		<!-- Source: https://mvnrepository.com/artifact/org.testng/testng -->
+		<!-- Compile scope (not test) because listener classes under src/main/java use it -->
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-chrome-driver</artifactId>
-			<version>4.43.0</version>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.10.2</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- Source:
-		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-ie-driver -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-ie-driver</artifactId>
-			<version>4.43.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<!-- Source:
-		https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>6.3.4</version>
-			<scope>compile</scope>
-		</dependency>
+
 		<!-- Source:
 		https://mvnrepository.com/artifact/com.aventstack/extentreports -->
 		<dependency>
@@ -46,6 +40,7 @@
 			<version>5.1.2</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<!-- Source: https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -57,14 +52,29 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.5</version>
 		</dependency>
+
+		<!-- Source: https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.16.1</version>
+		</dependency>
+
+		<!-- Source:
+		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
 		<!-- Source:
 		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.26.0</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
@@ -84,15 +94,8 @@
 			<artifactId>cucumber-core</artifactId>
 			<version>7.34.3</version>
 		</dependency>
-		<!-- Source:
-		https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>7.34.3</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<!-- Run Tests -->
@@ -101,10 +104,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.5</version>
 				<configuration>
-					<systemPropertyVariables>
-						<!--<browser>${browser}</browser>-->
-						<!--<env>${env}</env>-->
-					</systemPropertyVariables>				
+					<suiteXmlFiles>
+						<suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+					</suiteXmlFiles>
 					<parallel>methods</parallel>
 					<threadCount>4</threadCount>
 				</configuration>
@@ -119,14 +121,6 @@
 					<source>17</source>
 					<target>17</target>
 				</configuration>
-
-			</plugin>
-
-			<!-- Integration Tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.2.5</version>
 			</plugin>
 
 			<!-- Clean -->
@@ -138,12 +132,13 @@
 
 		</plugins>
 	</build>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-bom</artifactId>
-				<version>2.24.1</version>
+				<version>2.26.0</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
